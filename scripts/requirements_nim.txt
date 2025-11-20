@@ -1,0 +1,5 @@
+# Requirements for NVIDIA NIM Integration
+# Install with: pip install -r scripts/requirements_nim.txt
+
+httpx>=0.25.0
+

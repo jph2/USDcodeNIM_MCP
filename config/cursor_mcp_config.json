@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "nvidia-nim": {
+      "command": "python",
+      "args": [
+        "E:\\SynologyDrive\\9999_LocalRepo\\USDcodeNIM_MCP\\scripts\\nim_mcp_server.py"
+      ],
+      "env": {
+        "NIM_API_KEY": "${NIM_API_KEY}",
+        "NIM_ENDPOINT": "https://integrate.api.nvidia.com/v1/chat/completions",
+        "NIM_MODEL": "usdcode"
+      }
+    }
+  }
+}
+
