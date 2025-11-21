@@ -43,7 +43,7 @@ class NIMClient:
         self,
         api_key: Optional[str] = None,
         endpoint: Optional[str] = None,
-        model: str = "usdcode"
+        model: Optional[str] = None
     ):
         """
         Initialize NIM client.
@@ -51,7 +51,7 @@ class NIMClient:
         Args:
             api_key: NVIDIA NIM API key (or from NIM_API_KEY env var)
             endpoint: API endpoint URL (defaults to USD code model)
-            model: Model name (defaults to "usdcode")
+            model: Model name (defaults to "nvidia/usdcode-llama-3.1-70b-instruct")
         """
         self.api_key = api_key or os.getenv("NIM_API_KEY")
         if not self.api_key:
@@ -63,7 +63,17 @@ class NIMClient:
         # Default endpoint for USD code model
         default_endpoint = "https://integrate.api.nvidia.com/v1/chat/completions"
         self.endpoint = endpoint or os.getenv("NIM_ENDPOINT", default_endpoint)
-        self.model = model or os.getenv("NIM_MODEL", "usdcode")
+        
+        # Hardcoded fallback to ensure correct model is used if env var is missing or wrong
+        default_model = "nvidia/usdcode-llama-3.1-70b-instruct"
+        env_model = os.getenv("NIM_MODEL")
+        
+        # If env_model is "usdcode" (old default), override it with the correct one
+        if env_model == "usdcode":
+            self.model = default_model
+        else:
+            self.model = model or env_model or default_model
+        
         self.client = httpx.AsyncClient(
             timeout=60.0,
             headers={
@@ -95,6 +105,8 @@ class NIMClient:
             "model": self.model,
             "messages": messages,
             "temperature": temperature,
+            "top_p": 1,
+            "expert_type": "auto",  # Merged directly into payload
         }
         
         if max_tokens:
@@ -109,11 +121,37 @@ class NIMClient:
             return response.json()
         except httpx.HTTPStatusError as e:
             error_msg = f"NIM API error: {e.response.status_code}"
+            
+            # Provide specific guidance for common errors
+            if e.response.status_code == 404:
+                error_msg += (
+                    f"\n\n404 Not Found - The endpoint URL may be incorrect.\n"
+                    f"Current endpoint: {self.endpoint}\n"
+                    f"Current model: {self.model}\n\n"
+                    f"Troubleshooting:\n"
+                    f"1. Verify your API key is correct at: https://build.nvidia.com/nvidia/usdcode\n"
+                    f"2. Check if the endpoint URL needs to include the model name\n"
+                    f"3. Try setting NIM_ENDPOINT environment variable with the correct endpoint\n"
+                    f"4. Check NVIDIA NIM documentation for the correct endpoint format\n"
+                    f"5. The endpoint might need to be: https://integrate.api.nvidia.com/v1/nim/{self.model}/chat/completions"
+                )
+            elif e.response.status_code == 401:
+                error_msg += (
+                    f"\n\n401 Unauthorized - API key may be invalid or expired.\n"
+                    f"Verify your API key at: https://build.nvidia.com/nvidia/usdcode"
+                )
+            elif e.response.status_code == 403:
+                error_msg += (
+                    f"\n\n403 Forbidden - API key may not have access to this model.\n"
+                    f"Check your API key permissions at: https://build.nvidia.com/nvidia/usdcode"
+                )
+            
             try:
                 error_detail = e.response.json()
-                error_msg += f" - {error_detail}"
+                error_msg += f"\n\nAPI Response: {error_detail}"
             except:
-                error_msg += f" - {e.response.text}"
+                error_msg += f"\n\nAPI Response: {e.response.text}"
+            
             raise RuntimeError(error_msg)
     
     async def validate_usd_code(
@@ -233,31 +271,107 @@ Generate clean, well-commented USD Python code following best practices:
         await self.client.aclose()
 
 
-async def handle_mcp_request(request: Dict[str, Any]) -> Dict[str, Any]:
+async def handle_mcp_request(request: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     """
     Handle MCP protocol request.
     
-    This is a simplified MCP handler. For full MCP protocol support,
-    you would need to implement the complete MCP specification.
+    Returns None for notifications (no response needed).
     """
     method = request.get("method")
     params = request.get("params", {})
+    request_id = request.get("id")
     
-    client = NIMClient()
+    # Handle initialization handshake
+    if method == "initialize":
+        return {
+            "jsonrpc": "2.0",
+            "id": request_id,
+            "result": {
+                "protocolVersion": "2024-11-05",
+                "capabilities": {
+                    "tools": {}
+                },
+                "serverInfo": {
+                    "name": "nvidia-nim",
+                    "version": "1.0.0"
+                }
+            }
+        }
     
-    try:
-        if method == "tools/call":
-            tool_name = params.get("name")
-            arguments = params.get("arguments", {})
-            
+    # Handle initialized notification (no response needed)
+    if method == "initialized":
+        return None
+    
+    # Handle tools/list request
+    if method == "tools/list":
+        return {
+            "jsonrpc": "2.0",
+            "id": request_id,
+            "result": {
+                "tools": [
+                    {
+                        "name": "validate_usd_code",
+                        "description": "Validate USD Python code using NVIDIA NIM",
+                        "inputSchema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "string",
+                                    "description": "USD Python code to validate"
+                                },
+                                "context": {
+                                    "type": "string",
+                                    "description": "Optional context about what the code does"
+                                }
+                            },
+                            "required": ["code"]
+                        }
+                    },
+                    {
+                        "name": "generate_usd_code",
+                        "description": "Generate USD Python code using NVIDIA NIM",
+                        "inputSchema": {
+                            "type": "object",
+                            "properties": {
+                                "prompt": {
+                                    "type": "string",
+                                    "description": "Description of code to generate"
+                                },
+                                "context": {
+                                    "type": "string",
+                                    "description": "Optional context about the project or requirements"
+                                }
+                            },
+                            "required": ["prompt"]
+                        }
+                    }
+                ]
+            }
+        }
+    
+    # Handle tool calls
+    if method == "tools/call":
+        tool_name = params.get("name")
+        arguments = params.get("arguments", {})
+        
+        client = NIMClient()
+        
+        try:
             if tool_name == "validate_usd_code":
                 code = arguments.get("code", "")
                 context = arguments.get("context")
                 result = await client.validate_usd_code(code, context)
                 return {
                     "jsonrpc": "2.0",
-                    "id": request.get("id"),
-                    "result": result
+                    "id": request_id,
+                    "result": {
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": json.dumps(result, indent=2)
+                            }
+                        ]
+                    }
                 }
             
             elif tool_name == "generate_usd_code":
@@ -266,38 +380,53 @@ async def handle_mcp_request(request: Dict[str, Any]) -> Dict[str, Any]:
                 code = await client.generate_usd_code(prompt, context)
                 return {
                     "jsonrpc": "2.0",
-                    "id": request.get("id"),
-                    "result": {"code": code}
+                    "id": request_id,
+                    "result": {
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": code
+                            }
+                        ]
+                    }
                 }
             
             else:
                 return {
                     "jsonrpc": "2.0",
-                    "id": request.get("id"),
+                    "id": request_id,
                     "error": {"code": -32601, "message": f"Unknown tool: {tool_name}"}
                 }
         
-        else:
+        except Exception as e:
             return {
                 "jsonrpc": "2.0",
-                "id": request.get("id"),
-                "error": {"code": -32601, "message": f"Unknown method: {method}"}
+                "id": request_id,
+                "error": {"code": -32603, "message": str(e)}
             }
+        
+        finally:
+            await client.close()
     
-    except Exception as e:
+    # Unknown method
+    if request_id is not None:
         return {
             "jsonrpc": "2.0",
-            "id": request.get("id"),
-            "error": {"code": -32603, "message": str(e)}
+            "id": request_id,
+            "error": {"code": -32601, "message": f"Unknown method: {method}"}
         }
     
-    finally:
-        await client.close()
+    # Notification with no response needed
+    return None
 
 
 async def main():
     """Main entry point for MCP server."""
     # Read from stdin (MCP protocol uses stdio)
+    # Use unbuffered stdin for better compatibility
+    import sys
+    sys.stdin.reconfigure(encoding='utf-8', errors='replace')
+    
     while True:
         try:
             line = await asyncio.get_event_loop().run_in_executor(
@@ -306,15 +435,22 @@ async def main():
             if not line:
                 break
             
-            request = json.loads(line.strip())
+            line = line.strip()
+            if not line:
+                continue
+            
+            request = json.loads(line)
             response = await handle_mcp_request(request)
-            print(json.dumps(response), flush=True)
+            
+            # Only send response if there is one (notifications return None)
+            if response is not None:
+                print(json.dumps(response), flush=True)
         
-        except json.JSONDecodeError:
+        except json.JSONDecodeError as e:
             error_response = {
                 "jsonrpc": "2.0",
                 "id": None,
-                "error": {"code": -32700, "message": "Parse error"}
+                "error": {"code": -32700, "message": f"Parse error: {str(e)}"}
             }
             print(json.dumps(error_response), flush=True)
         
@@ -331,7 +467,12 @@ if __name__ == "__main__":
     # Test mode: validate a sample code snippet
     if len(sys.argv) > 1 and sys.argv[1] == "test":
         async def test():
-            client = NIMClient()
+            # Allow API key to be passed as second argument for testing
+            api_key = None
+            if len(sys.argv) > 2:
+                api_key = sys.argv[2]
+            
+            client = NIMClient(api_key=api_key)
             test_code = """
 from pxr import Usd, UsdGeom
 

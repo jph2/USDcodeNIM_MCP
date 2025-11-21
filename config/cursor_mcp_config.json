@@ -3,12 +3,12 @@
     "nvidia-nim": {
       "command": "python",
       "args": [
-        "E:\\SynologyDrive\\9999_LocalRepo\\USDcodeNIM_MCP\\scripts\\nim_mcp_server.py"
+        "C:\\path\\to\\USDcodeNIM_MCP\\scripts\\nim_mcp_server.py"
       ],
       "env": {
         "NIM_API_KEY": "${NIM_API_KEY}",
         "NIM_ENDPOINT": "https://integrate.api.nvidia.com/v1/chat/completions",
-        "NIM_MODEL": "usdcode"
+        "NIM_MODEL": "nvidia/usdcode-llama-3.1-70b-instruct"
       }
     }
   }
