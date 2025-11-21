@@ -139,5 +139,5 @@ This project is provided as-is for integration with NVIDIA NIM services.
 ---
 
 **Version**: 1.0.0  
-**Last Updated**: 2025-01-08
+**Last Updated**: 2025-11-21
 
