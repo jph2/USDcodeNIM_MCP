@@ -1,6 +1,8 @@
-# NVIDIA NIM Integration - Quick Reference
+# NVIDIA NIM Scripts - Reference Guide
 
-## Files Created
+> **Note:** For complete setup instructions, see the [README.md](../README.md) and [QUICK_REFERENCE.md](../QUICK_REFERENCE.md) in the repository root. This guide focuses specifically on the scripts in this directory.
+
+## Files in This Directory
 
 1. **`nim_mcp_server.py`** - MCP server wrapper for Cursor integration
 2. **`nim_direct_client.py`** - Simple direct client for standalone use
@@ -121,52 +123,29 @@ asyncio.run(main())
 
 ## Cursor MCP Configuration
 
-Add to your Cursor MCP config (location varies by Cursor version):
+For Cursor MCP setup instructions, see the [README.md](../README.md) Quick Start section. The `nim_mcp_server.py` script is used by Cursor's MCP system.
 
-```json
-{
-  "mcpServers": {
-    "nvidia-nim": {
-      "command": "python",
-      "args": ["<full_path_to>/scripts/nim_mcp_server.py"],
-      "env": {
-        "NIM_API_KEY": "${NIM_API_KEY}"
-      }
-    }
-  }
-}
-```
-
-**Note:** Update the path in `args` to match your actual project location.
+**Configuration file location:** `C:\Users\<username>\.cursor\mcp.json`
 
 ## Get API Key
 
+For detailed API key setup instructions, see the [README.md](../README.md) Quick Start section.
+
+**Quick steps:**
 1. Visit [build.nvidia.com/nvidia/usdcode](https://build.nvidia.com/nvidia/usdcode)
-2. Sign in with your NVIDIA account
-3. Generate an API key
-4. Copy the API key
-5. Set it as an environment variable using the instructions above
+2. Navigate to the NVIDIA NIM platform and search for "USD code" or "usdcode" in the model catalog
+3. Sign in or create an account to access your API key
+4. Set it as an environment variable using the instructions above
 
 **Do NOT paste the API key into any Python script files!**
 
 ## Using in Cursor
 
-Once configured, use NVIDIA NIM directly in Cursor's chat:
-
-**Generate USD Code:**
-- "Generate a USD Python script that creates a red cube"
-- "Create USD code for a material with texture"
-
-**Validate USD Code:**
-- "Validate this USD script using NVIDIA NIM" (with file open)
-- "Check if this follows USD best practices"
-
-**Ask Questions:**
-- "What's the best way to create a USD stage?"
-- "Explain USD layer composition"
+For usage examples and prompts, see the [QUICK_REFERENCE.md](../QUICK_REFERENCE.md) or [README.md](../README.md) Usage section.
 
 ## Full Documentation
 
-- **Complete Guide:** `docs/NVIDIA_NIM_Integration_Guide.md`
-- **Quick Reference:** `QUICK_REFERENCE.md` (in repository root)
+- **Main Guide:** [README.md](../README.md) - Start here for setup
+- **Quick Reference:** [QUICK_REFERENCE.md](../QUICK_REFERENCE.md) - Condensed reference
+- **Complete Guide:** [docs/NVIDIA_NIM_Integration_Guide.md](../docs/NVIDIA_NIM_Integration_Guide.md) - Detailed troubleshooting and advanced topics
 

@@ -1,8 +1,8 @@
 # NVIDIA NIM Integration Guide for Cursor
 
-This guide explains how to integrate NVIDIA's NIM (NVIDIA Intelligent Model) USD code model into Cursor for enhanced USD development workflows.
+This comprehensive guide provides detailed instructions for integrating NVIDIA's NIM (NVIDIA Intelligent Model) USD code model into Cursor for enhanced USD development workflows.
 
-> **Quick Start:** See `QUICK_REFERENCE.md` in the repository root for a condensed version of this guide.
+> **Quick Start:** For a fast setup, see the [README.md](../README.md) in the repository root. For a condensed reference, see [QUICK_REFERENCE.md](../QUICK_REFERENCE.md).
 
 ## Overview
 
@@ -15,14 +15,7 @@ NVIDIA NIM provides specialized AI models for USD code generation and validation
 
 ## Quick Start
 
-**Fastest way to get started:**
-
-1. Get your API key from [build.nvidia.com/nvidia/usdcode](https://build.nvidia.com/nvidia/usdcode)
-2. Set environment variable: `set NIM_API_KEY=your_key` (Windows) or `export NIM_API_KEY=your_key` (Linux/Mac)
-3. Install dependencies: `pip install -r scripts/requirements_nim.txt`
-4. Test validation: `python scripts/validate_with_nim.py scripts/validate_asset.py`
-
-For full Cursor integration, continue with the setup steps below.
+**For the fastest setup, follow the Quick Start in [README.md](../README.md).** This guide provides detailed explanations and troubleshooting for each step.
 
 ## Prerequisites
 
@@ -35,9 +28,10 @@ For full Cursor integration, continue with the setup steps below.
 ### 1. Get Your NVIDIA NIM API Key
 
 1. Visit [build.nvidia.com/nvidia/usdcode](https://build.nvidia.com/nvidia/usdcode)
-2. Sign in with your NVIDIA account
-3. Generate an API key
-4. Copy the API key (you'll need it in the next step)
+2. Navigate to the NVIDIA NIM platform and search for "USD code" or "usdcode" in the model catalog
+3. Once you find the USD code model, sign in or create an account to access your API key
+4. The API key will be displayed on the model's page after authentication
+5. Copy the API key (you'll need it in the next step)
 
 ### 2. Set Environment Variable
 
@@ -133,40 +127,25 @@ python -c "import httpx; print(f'httpx version: {httpx.__version__}')"
 
 ### 4. Configure Cursor MCP
 
-Cursor stores MCP configuration in a specific location. The configuration file is provided at:
-- `config/cursor_mcp_config.json`
+**Quick Setup:** For basic setup instructions, see the [README.md](../README.md) Quick Start section. This section provides additional details and troubleshooting.
 
-**To use it:**
+**To configure Cursor:**
 
 1. **Open Cursor's MCP Settings:**
-   - Go to **Cursor Settings** → **Tools & MCP** (or use `Ctrl+,` and search for "MCP")
-   - You should see the "Installed MCP Servers" section similar to the screenshot below:
+   - Click the **cog wheel icon** in the upper right corner
+   - Select **Cursor Settings**
+   - Navigate to **Tools & MCP**
+   - Click **Add a new MCP server**
 
-   ![Cursor MCP Settings](images/cursor_mcp_settings.png)
-   
-   *Cursor's Tools & MCP settings page showing installed MCP servers*
-
-2. **Add the NVIDIA NIM server:**
-   - Click on **"New MCP Server"** or **"Add a Custom MCP Server"** button
-   - Alternatively, you can manually edit the MCP configuration file:
-   
-   **Find your Cursor MCP config location:**
-   - Windows: `%APPDATA%\Cursor\User\globalStorage\saoudrizwan.claude-dev\settings\cline_mcp_settings.json`
-   - Or: `C:\Users\<username>\.cursor\mcp.json` (newer Cursor versions)
-   - Or check Cursor Settings → Tools & MCP → View configuration file
-
-3. **Add the NVIDIA NIM server configuration:**
+2. **Add the NVIDIA NIM server configuration:**
    ```json
    {
      "mcpServers": {
        "nvidia-nim": {
          "command": "python",
-         "args": [
-           "C:\\path\\to\\USDcodeNIM_MCP\\scripts\\nim_mcp_server.py"
-         ],
+         "args": ["C:\\path\\to\\USDcodeNIM_MCP\\scripts\\nim_mcp_server.py"],
          "env": {
-           "NIM_API_KEY": "${NIM_API_KEY}",
-           "NIM_ENDPOINT": "https://integrate.api.nvidia.com/v1/chat/completions",
+           "NIM_API_KEY": "your_api_key_here",
            "NIM_MODEL": "nvidia/usdcode-llama-3.1-70b-instruct"
          }
        }
@@ -174,12 +153,15 @@ Cursor stores MCP configuration in a specific location. The configuration file i
    }
    ```
 
-   **Important:** Replace `C:\\path\\to\\USDcodeNIM_MCP` with the actual path to your USDcodeNIM_MCP repository. For example:
-   - `C:\\Users\\<username>\\USDcodeNIM_MCP\\scripts\\nim_mcp_server.py`
-   - `D:\\Projects\\USDcodeNIM_MCP\\scripts\\nim_mcp_server.py`
-   - Or use forward slashes: `C:/path/to/USDcodeNIM_MCP/scripts/nim_mcp_server.py`
+   **Important:** 
+   - Replace `C:\\path\\to\\USDcodeNIM_MCP` with the actual path to your USDcodeNIM_MCP repository
+   - Replace `your_api_key_here` with your actual API key
+   - The configuration file is located at `C:\Users\<username>\.cursor\mcp.json`
+   - If you already have other MCP servers configured, simply add the `nvidia-nim` entry to the existing `mcpServers` object
 
-3. **Restart Cursor** to load the new MCP server
+   **Alternative:** You can also use environment variable syntax `${NIM_API_KEY}` if you prefer to keep the API key in your system environment variables instead of hardcoding it in the config file.
+
+3. **Restart Cursor** completely to load the new MCP server
 
 ### 5. Verify Installation
 

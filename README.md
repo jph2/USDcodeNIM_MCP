@@ -11,11 +11,14 @@ This repository provides tools and configurations to integrate NVIDIA's speciali
 - **USD-Specific Suggestions** and best practices
 - **Double-Checking** generated code for errors and improvements
 
-## Quick Start
+## Quick Start 
 
-1. **Get your API key** from [build.nvidia.com/nvidia/usdcode](https://build.nvidia.com/nvidia/usdcode)
+1. ### Get your API key
+   1. from [build.nvidia.com/nvidia/usdcode](https://build.nvidia.com/nvidia/usdcode)
+   
+   Navigate to the NVIDIA NIM platform and search for "USD code" or "usdcode" in the model catalog. Once you find the USD code model, sign in or create an account to access your API key. The API key will be displayed on the model's page after authentication.
 
-2. **Set environment variable:**
+   2. **Set environment variable:**
    ```powershell
    $env:NIM_API_KEY = "your_api_key_here"  # Windows PowerShell
    ```
@@ -26,15 +29,49 @@ This repository provides tools and configurations to integrate NVIDIA's speciali
    export NIM_API_KEY=your_api_key_here  # Linux/Mac
    ```
 
-3. **Install dependencies:**
+   3. **Install dependencies:**
    ```bash
    pip install -r scripts/requirements_nim.txt
    ```
 
-4. **Test the integration:**
+   4. **Test the integration:**
    ```bash
    python scripts/nim_mcp_server.py test
    ```
+
+### 2. Configure Cursor
+Open Cursor and click the **cog wheel icon** in the upper right corner to access settings. Select **Cursor Settings**, then navigate to **Tools & MCP**. Click **Add a new MCP server** and paste the following JSON configuration into the file:
+
+```json
+{
+  "mcpServers": {
+    "nvidia-nim": {
+      "command": "python",
+      "args": ["C:\\path\\to\\USDcodeNIM_MCP\\scripts\\nim_mcp_server.py"],
+      "env": {
+        "NIM_API_KEY": "your_api_key_here",
+        "NIM_MODEL": "nvidia/usdcode-llama-3.1-70b-instruct"
+      }
+    }
+  }
+}
+```
+
+Make sure to update the path to match your repository location and replace `your_api_key_here` with your actual API key.
+
+  1. **Restart Cursor**
+Close and reopen Cursor completely.
+
+  1. **Verify Connection**
+Settings → Tools & MCP → Check `nvidia-nim` is **green** ✅
+
+> 💡 **Documentation Hierarchy:**
+> - **This README** → Quick Start (basic setup)
+> - **[Quick Reference Guide](QUICK_REFERENCE.md)** → More depth, troubleshooting, and examples
+> - **[Complete Guide](docs/NVIDIA_NIM_Integration_Guide.md)** → Everything described in detail
+
+---
+
 
 ## Repository Structure
 
@@ -149,8 +186,9 @@ To integrate with Cursor IDE:
 }
 ```
 
-See `docs/NVIDIA_NIM_Integration_Guide.md` for detailed setup instructions.
-See `QUICK_REFERENCE.md` for a quick reference guide.
+**Need more help?**
+- For more depth and troubleshooting → See [`QUICK_REFERENCE.md`](QUICK_REFERENCE.md)
+- For comprehensive documentation → See [`docs/NVIDIA_NIM_Integration_Guide.md`](docs/NVIDIA_NIM_Integration_Guide.md)
 
 ## Requirements
 
@@ -161,10 +199,15 @@ See `QUICK_REFERENCE.md` for a quick reference guide.
 
 ## Documentation
 
-- **Quick Reference**: `QUICK_REFERENCE.md` (start here!)
-- **Scripts Guide**: `scripts/README_NIM.md`
-- **Complete Guide**: `docs/NVIDIA_NIM_Integration_Guide.md`
-- **Configuration**: `config/cursor_mcp_config.json`
+**Documentation Hierarchy:**
+
+1. **[README.md](README.md)** (you are here) → Quick Start with basic setup instructions
+2. **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** → More depth, troubleshooting, examples, and common commands
+3. **[Complete Guide](docs/NVIDIA_NIM_Integration_Guide.md)** → Comprehensive documentation with everything described in detail
+
+**Additional Resources:**
+- **Scripts Guide**: [`scripts/README_NIM.md`](scripts/README_NIM.md) - Script-specific documentation
+- **Configuration**: [`config/cursor_mcp_config.json`](config/cursor_mcp_config.json) - MCP configuration template
 
 ## Resources
 

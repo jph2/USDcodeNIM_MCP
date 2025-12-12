@@ -5,8 +5,11 @@
 ### 1. Get API Key
 Visit: [build.nvidia.com/nvidia/usdcode](https://build.nvidia.com/nvidia/usdcode)
 
+Navigate to the NVIDIA NIM platform and search for "USD code" or "usdcode" in the model catalog. Once you find the USD code model, sign in or create an account to access your API key. The API key will be displayed on the model's page after authentication.
+
 ### 2. Configure Cursor
-Edit `C:\Users\<username>\.cursor\mcp.json`:
+Open Cursor and click the **cog wheel icon** in the upper right corner to access settings. Select **Cursor Settings**, then navigate to **Tools & MCP**. Click **Add a new MCP server** and paste the following JSON configuration into the file:
+
 ```json
 {
   "mcpServers": {
@@ -21,6 +24,8 @@ Edit `C:\Users\<username>\.cursor\mcp.json`:
   }
 }
 ```
+
+**Important:** Make sure to update the path to match your repository location and replace `your_api_key_here` with your actual API key. The configuration file is located at `C:\Users\<username>\.cursor\mcp.json` - if you already have other MCP servers configured, simply add the `nvidia-nim` entry to the existing `mcpServers` object.
 
 ### 3. Restart Cursor
 Close and reopen Cursor completely.
