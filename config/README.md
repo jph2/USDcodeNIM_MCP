@@ -1,3 +1,8 @@
+**Version**: 1.0.0 | **Date**: 16.02.2026 | **Time**: 12:00 | **GlobalID**: 20260216_1200_USDcodeNIM_MCP_batch
+
+**Tag block:**
+#framework_integration #directrl #cursor #import #opinions #machinery #mcp_protocol #opencode #openusd #usd_core #conversion #workflow_automation #ai_coding_agents #deterministic_workflows #best_practices
+
 # MCP Configuration Template
 
 This directory contains the template configuration file for integrating NVIDIA NIM with Cursor IDE.

@@ -1,3 +1,8 @@
+**Version**: 1.0.0 | **Date**: 16.02.2026 | **Time**: 12:00 | **GlobalID**: 20260216_1200_USDcodeNIM_MCP_batch
+
+**Tag block:**
+#omniverse #directrl #vscode #validation #creative #mcp_protocol #opencode #framework_integration #openusd #usd_core #hybrid #references #analysis #export #workflow_automation #ai_coding_agents #quality_assurance #deterministic_workflows
+
 # MCP Server Comparison: usd-mcp-server vs USDcodeNIM_MCP vs NVIDIA Blog MCP
 
 **Date:** 10.12.2025  

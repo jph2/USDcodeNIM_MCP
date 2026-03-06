@@ -1,3 +1,8 @@
+**Version**: 1.0.0 | **Date**: 16.02.2026 | **Time**: 12:00 | **GlobalID**: 20260216_1200_USDcodeNIM_MCP_batch
+
+**Tag block:**
+#troubleshooting #reference #usd_core #vscode #v_model #creative #cursor #mcp_protocol #opencode #framework_integration #openusd #references #analysis #conversion #workflow_automation #ai_coding_agents #best_practices #deterministic_workflows
+
 # NVIDIA NIM MCP - Quick Reference Guide
 
 ## 🚀 Quick Start

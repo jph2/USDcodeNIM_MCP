@@ -1,3 +1,8 @@
+**Version**: 1.0.0 | **Date**: 16.02.2026 | **Time**: 12:00 | **GlobalID**: 20260216_1200_USDcodeNIM_MCP_batch
+
+**Tag block:**
+#framework_integration #reference #construction #directrl #cursor #aas_integration #standalone #validation #import #mcp_protocol #opencode #openusd #usd_core #semantic_governance #references #analysis #conversion #workflow_automation #ai_coding_agents #quality_assurance
+
 # NVIDIA NIM Scripts - Reference Guide
 
 > **Note:** For complete setup instructions, see the [README.md](../README.md) and [QUICK_REFERENCE.md](../QUICK_REFERENCE.md) in the repository root. This guide focuses specifically on the scripts in this directory.

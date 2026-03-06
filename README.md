@@ -1,3 +1,8 @@
+**Version**: 1.0.0 | **Date**: 16.02.2026 | **Time**: 12:00 | **GlobalID**: 20260216_1200_USDcodeNIM_MCP_batch
+
+**Tag block:**
+#framework_integration #stage #v_model #aas_integration #cursor #vscode #validation #specializes #mcp_protocol #usd_core #opencode #openusd #semantic_governance #export #workflow_automation #ai_coding_agents #quality_assurance #deterministic_workflows #best_practices
+
 # USDcodeNIM_MCP
 
 NVIDIA NIM (NVIDIA Intelligent Model) integration for Cursor IDE, specifically configured for USD (Universal Scene Description) code generation and validation.

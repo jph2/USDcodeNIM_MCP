@@ -1,3 +1,8 @@
+**Version**: 1.0.0 | **Date**: 16.02.2026 | **Time**: 12:00 | **GlobalID**: 20260216_1200_USDcodeNIM_MCP_batch
+
+**Tag block:**
+#best_practices #framework_integration #stage #aas_integration #cursor #construction #v_model #vscode #reference #specializes #validation #mcp_protocol #opencode #openusd #usd_core #semantic_governance #references #analysis #conversion #workflow_automation
+
 # NVIDIA NIM Integration Guide for Cursor
 
 This comprehensive guide provides detailed instructions for integrating NVIDIA's NIM (NVIDIA Intelligent Model) USD code model into Cursor for enhanced USD development workflows.

@@ -1,3 +1,8 @@
+**Version**: 1.0.0 | **Date**: 16.02.2026 | **Time**: 12:00 | **GlobalID**: 20260216_1200_USDcodeNIM_MCP_batch
+
+**Tag block:**
+#omniverse #openusd #architecture #directrl #vscode #stage #analysis #list_operations #connectors #mcp_protocol #opencode #framework_integration #usd_core #hybrid #comfyui #ai_coding_agents #workflow_automation #deterministic_workflows #websocket_api
+
 # Omniverse MCP Server - Proposal & Architecture
 
 **Date:** 10.12.2025  

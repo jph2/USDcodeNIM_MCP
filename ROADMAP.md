@@ -1,9 +1,11 @@
 # USD Development Ecosystem - Unified Roadmap
 
-**Date:** 10.12.2025  
-**Version:** 1.0.0  
+**Date:** 23.02.2026  
+**Version:** 1.1.0  
 **Status:** Active Development  
-**Last Updated:** 10.12.2025
+**Last Updated:** 23.02.2026
+**Tag block:**
+#conversion #consolidation #analysis #comfyui #aas_integration #stage #vscode #cursor #post_production #mcp_protocol #opencode #framework_integration #openusd #usd_core #semantic_governance #blender #rhino #c4d #materials #rendering
 
 ---
 
@@ -329,6 +331,33 @@ Create integration between USDcodeNIM_MCP and ComfyUI nodes.
 **Dependencies:**
 - ComfyUI nodes installed
 - Integration patterns defined
+
+---
+
+### 3.5 Unified MCP Orchestration (USDcodeNIM + ComfyUI) ⏱️ 10 hours
+
+**Priority:** High  
+**Effort:** High  
+**Impact:** High
+
+**Description:**
+Implement a single orchestration surface that combines NIM generation/validation with ComfyUI workflow execution to remove manual copy/paste.
+
+**Target flow:**
+1. Prompt to NIM (`generate_usd_code`)
+2. Validation (`validate_usd_code`)
+3. Inject generated code into ComfyUI `USD Dev Sandbox`
+4. Execute workflow and return structured run result
+
+**Initial tools (proposal):**
+- `nim_generate_validate_and_run`
+- `comfy_set_sandbox_code`
+- `comfy_run_workflow`
+- `comfy_get_last_sandbox_result`
+
+**Status:** 🔴 Not Started
+
+**Discovery:** [USDcodeNIM_ComfyUI_Unified_MCP_DISCOVERY.md](./docs/USDcodeNIM_ComfyUI_Unified_MCP_DISCOVERY.md)
 
 ---
 
@@ -752,6 +781,7 @@ Support multiple NVIDIA NIM models:
 3. [ ] Implement ComfyUI nodes integration (C.5)
 4. [ ] Create integration examples
 5. [ ] Gather user feedback
+6. [ ] Define and implement Unified MCP Orchestration (3.5)
 
 ### ComfyUI Nodes (This Quarter)
 1. [ ] Implement USDcodeNIM_MCP integration node (C.5)
@@ -872,4 +902,3 @@ class GenerateCodeParams(TypedDict):
     temperature: float
     max_tokens: Optional[int]
 ```
-
