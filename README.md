@@ -1,3 +1,14 @@
+---
+arys_schema_version: '1.2'
+id: b1c4c143-c78e-405f-9e99-40eec1d23dc2
+title: USDcodeNIM_MCP
+type: TECHNICAL
+status: active
+trust_level: 2
+created: '2026-02-17T09:42:16Z'
+last_modified: '2026-02-17T09:42:16Z'
+---
+
 **Version**: 1.0.0 | **Date**: 16.02.2026 | **Time**: 12:00 | **GlobalID**: 20260216_1200_USDcodeNIM_MCP_batch
 
 **Tag block:**

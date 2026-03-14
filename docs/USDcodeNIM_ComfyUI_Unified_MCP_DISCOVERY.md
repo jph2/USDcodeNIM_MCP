@@ -1,3 +1,14 @@
+---
+arys_schema_version: '1.2'
+id: c6d70445-6fc9-43ec-9a36-72c0a0c9dc76
+title: USDcodeNIM + ComfyUI Unified MCP Discovery
+type: STRATEGIC
+status: active
+trust_level: 2
+created: '2026-02-23T22:34:23Z'
+last_modified: '2026-02-23T22:34:23Z'
+---
+
 **Version**: 1.0.0 | **Date**: 23.02.2026 | **Time**: 23:20 | **GlobalID**: 20260223_2320_USDcodeNIM_MCP_UnifiedMCP_DISCOVERY_001
 
 **Tag block:**

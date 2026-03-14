@@ -1,3 +1,14 @@
+---
+arys_schema_version: '1.2'
+id: e4096d0f-2174-4392-9d34-818e67545544
+title: NVIDIA NIM MCP - Quick Reference Guide
+type: TECHNICAL
+status: active
+trust_level: 2
+created: '2026-02-17T09:42:16Z'
+last_modified: '2026-02-17T09:42:16Z'
+---
+
 **Version**: 1.0.0 | **Date**: 16.02.2026 | **Time**: 12:00 | **GlobalID**: 20260216_1200_USDcodeNIM_MCP_batch
 
 **Tag block:**

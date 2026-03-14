@@ -1,3 +1,14 @@
+---
+arys_schema_version: '1.2'
+id: 4173c17a-3fc5-40e8-a648-bcccd409d38a
+title: USD Development Ecosystem - Unified Roadmap
+type: TECHNICAL
+status: active
+trust_level: 2
+created: '2026-02-23T22:34:33Z'
+last_modified: '2026-02-23T22:34:33Z'
+---
+
 # USD Development Ecosystem - Unified Roadmap
 
 **Date:** 23.02.2026  

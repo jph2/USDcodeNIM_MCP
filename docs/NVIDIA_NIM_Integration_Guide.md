@@ -1,3 +1,14 @@
+---
+arys_schema_version: '1.2'
+id: 7c88f5f3-6e29-473c-a3b8-76a996033573
+title: NVIDIA NIM Integration Guide for Cursor
+type: PRACTICAL
+status: active
+trust_level: 2
+created: '2026-02-17T09:24:43Z'
+last_modified: '2026-02-17T09:24:43Z'
+---
+
 **Version**: 1.0.0 | **Date**: 16.02.2026 | **Time**: 12:00 | **GlobalID**: 20260216_1200_USDcodeNIM_MCP_batch
 
 **Tag block:**

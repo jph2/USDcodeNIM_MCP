@@ -1,3 +1,14 @@
+---
+arys_schema_version: '1.2'
+id: 8db951d4-aaae-475b-9a42-4bb42c1fa753
+title: NVIDIA NIM Scripts - Reference Guide
+type: TECHNICAL
+status: active
+trust_level: 2
+created: '2026-02-17T09:24:43Z'
+last_modified: '2026-02-17T09:24:43Z'
+---
+
 **Version**: 1.0.0 | **Date**: 16.02.2026 | **Time**: 12:00 | **GlobalID**: 20260216_1200_USDcodeNIM_MCP_batch
 
 **Tag block:**
