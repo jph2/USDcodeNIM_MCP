@@ -25,6 +25,15 @@ import asyncio
 from typing import Any, Dict, List, Optional
 from pathlib import Path
 
+# Advanced Context Optimization (Code Mode)
+try:
+    from RestrictedPython import compile_restricted
+    from RestrictedPython.PrintCollector import PrintCollector
+    from RestrictedPython.Guards import safe_builtins
+    HAS_RESTRICTED = True
+except ImportError:
+    HAS_RESTRICTED = False
+
 # Add project root to path for imports
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
@@ -265,6 +274,44 @@ Generate clean, well-commented USD Python code following best practices:
             return response["choices"][0]["message"]["content"]
         
         raise RuntimeError("Failed to generate code")
+
+    async def generate_usd_coded(
+        self,
+        prompt: str,
+        python_code: str,
+        context: Optional[str] = None
+    ) -> str:
+        """
+        Generate USD code and immediately post-process it with a sandboxed script.
+        This follows the 'Code Mode' pattern to save context.
+        """
+        raw_code = await self.generate_usd_code(prompt, context)
+        
+        if not HAS_RESTRICTED:
+            return f"Error: RestrictedPython not installed. Cannot run code mode.\n\nRaw Result:\n{raw_code}"
+
+        try:
+            # Capture print()
+            _print_ = PrintCollector
+            
+            # Namespace
+            loc = {
+                "DATA": raw_code,
+                "_print_": _print_,
+                "_getattr_": getattr,
+                "getattr": getattr,
+            }
+            loc.update(safe_builtins)
+
+            # Execution
+            byte_code = compile_restricted(python_code, filename='<string>', mode='exec')
+            exec(byte_code, {"__builtins__": loc}, loc)
+            
+            processed = loc['_print_']().strip()
+            return processed if processed else "Script processed code successfully but returned no output."
+
+        except Exception as e:
+            return f"Sandbox Execution Error: {e}\n\nRaw Result Available in DATA."
     
     async def close(self):
         """Close HTTP client."""
@@ -344,6 +391,28 @@ async def handle_mcp_request(request: Dict[str, Any]) -> Optional[Dict[str, Any]
                             },
                             "required": ["prompt"]
                         }
+                    },
+                    {
+                        "name": "generate_usd_coded",
+                        "description": "Generate USD code and process it with a sandboxed Python script (Context Optimization)",
+                        "inputSchema": {
+                            "type": "object",
+                            "properties": {
+                                "prompt": {
+                                    "type": "string",
+                                    "description": "Description of code to generate"
+                                },
+                                "python_code": {
+                                    "type": "string",
+                                    "description": "Python snippet to process the generated code (access it via 'DATA' variable)"
+                                },
+                                "context": {
+                                    "type": "string",
+                                    "description": "Optional context"
+                                }
+                            },
+                            "required": ["prompt", "python_code"]
+                        }
                     }
                 ]
             }
@@ -386,6 +455,24 @@ async def handle_mcp_request(request: Dict[str, Any]) -> Optional[Dict[str, Any]
                             {
                                 "type": "text",
                                 "text": code
+                            }
+                        ]
+                    }
+                }
+            
+            elif tool_name == "generate_usd_coded":
+                prompt = arguments.get("prompt", "")
+                python_code = arguments.get("python_code", "")
+                context = arguments.get("context")
+                result = await client.generate_usd_coded(prompt, python_code, context)
+                return {
+                    "jsonrpc": "2.0",
+                    "id": request_id,
+                    "result": {
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": result
                             }
                         ]
                     }
