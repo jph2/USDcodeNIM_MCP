@@ -1,3 +1,6 @@
 # Next Steps file (local development notes)
 NEXT_STEPS.md
 
+# Python venv (local: pip install -r scripts/requirements_nim.txt)
+.venv/
+
